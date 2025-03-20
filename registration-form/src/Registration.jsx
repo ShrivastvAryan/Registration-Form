@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useAuth } from "./auth";
 
 export const RegistrationForm=()=>{
 
@@ -8,6 +9,8 @@ export const RegistrationForm=()=>{
         phone:"",
         password:"",
     });
+
+     const {storeTokenInLS}=useAuth();
 
     //handling the input values
 
@@ -42,7 +45,8 @@ export const RegistrationForm=()=>{
                 const res_data= await response.json();
                 console.log('res from server', res_data);
 
-                storetokenInLS(res_data.token); //stored token in local storage
+                storeTokenInLS(res_data.token); //stored token in local storage
+                //localStorage.setItem("token",res_data.token); // both ways can be used
 
                 alert("Login successful")
                 setUser({email:"", password:"",username:"",phone:""});
