@@ -24,9 +24,36 @@ export const RegistrationForm=()=>{
 
     //handling form submission
 
-    const handleSubmit=(e)=>{
-        e.preventDefault() // to disable refreshing of page after submitting
-        alert("Registration successful");
+    const handleSubmit=async (e)=>{
+        e.preventDefault();
+        try{
+            const response=await fetch(URL,{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify(user),
+            });
+
+            
+
+            if(response.ok){
+
+                const res_data= await response.json();
+                console.log('res from server', res_data);
+
+                storetokenInLS(res_data.token); //stored token in local storage
+
+                alert("Login successful")
+                setUser({email:"", password:"",username:"",phone:""});
+            }
+            else{
+                alert("Invalid credential");
+                console.log("invalid credential")
+            }
+        }catch(error){
+            console.log(error);
+        }
     }
 
 
